@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/08/07 07:46:40 by padam            ###   ########.fr        #
+#    Updated: 2024/08/08 08:52:45 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,11 +21,12 @@ LIBFT_DIR = libft
 SRC_PATH = src
 OBJ_PATH = obj
 
-OBJ_DIRS =	main
+OBJ_DIRS =
 
 SRCS_MAIN =	main.c
 
-SRC_NAME =	$(addprefix main/,						$(SRCS_MAIN))		\
+SRC_NAME =										$(SRCS_MAIN)	\
+#			$(addprefix ,							$())		\
 
 RED = \033[1;31m
 GREEN = \033[1;32m
@@ -40,14 +41,16 @@ all: $(NAME)
 
 $(NAME): ascii_art $(LIBFT_DIR)/libft.a $(OBJS)
 	@$(CC) -o $(NAME) $(CFLAGS) $(LIBS) $(OBJS) $(LIBFT_DIR)/libft.a
-	@printf "%-100s\n" "$(NAME) compiled"
+	@printf "$(GREEN)%-100s\n\n$(RESET)" "$(NAME) compiled"
 
 $(LIBFT_DIR)/libft.a:
 	@make -C $(LIBFT_DIR)
 
 $(OBJ_PATH)	:
 	@mkdir -p $(OBJ_PATH)
+ifneq ($(OBJ_DIRS),)
 	@mkdir -p $(addprefix $(OBJ_PATH)/,$(OBJ_DIRS))
+endif
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c | $(OBJ_PATH)
 	@printf "%-100s\r" "$(CC) $(CFLAGS) -o $@"
@@ -70,8 +73,7 @@ fclean: clean
 re: fclean all
 
 ascii_art:
-	@clear
-	@printf "$(RED)																					\n\
+	@printf "$(RED)																						\n\
 																										\n\
  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.		\n\
 | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |	\n\
