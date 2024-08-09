@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:36:36 by padam             #+#    #+#             */
-/*   Updated: 2024/08/07 07:41:07 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/09 00:26:33 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int main(int argc, char **argv)
 {
-	if (argc == 1 && argv)
-		write(1, "Hello, World!\n", 14);
+	t_flags flags;
+
+	(void)argc;
+	parse_arguments(argv, &flags);
 }

@@ -6,11 +6,23 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 08:55:14 by padam             #+#    #+#             */
-/*   Updated: 2024/08/09 00:36:26 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/09 23:13:10 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+/**
+ * @brief prints the error messages for the flags
+*/
+void	flag_error(char flag)
+{
+	ft_putstr_fd("ls: ", 2);
+	ft_putstr_fd("invalid option -- '", 2);
+	ft_putstr_fd(&flag, 2);
+	ft_putstr_fd("'\n", 2);
+}
+
 /**
  * @brief Handles any long flags (--flag)
  * @param arg the string containing the flag
@@ -25,6 +37,11 @@ int	long_flag(char *arg, t_flags *flags)
 	return (0);
 }
 
+
+/**
+ * @brief	checks if the character matches and sets flag accordingly
+ * @return
+*/
 /**
  * @brief Handles any short flags (-flags)
  * @param arg the string containing the flags
@@ -33,12 +50,30 @@ int	long_flag(char *arg, t_flags *flags)
 */
 int	short_flag(char *arg, t_flags *flags)
 {
-	(void)flags;
 	while (*arg)
 	{
-
+		if (*arg == 'a')
+			flags->a = true;
+		else if (*arg == 'd')
+			flags->d = true;
+		else if (*arg == 'f')
+			flags->f = true;
+		else if (*arg == 'g')
+			flags->g = true;
+		else if (*arg == 'l')
+			flags->l = true;
+		else if (*arg == 'u')
+			flags->u = true;
+		else if (*arg == 'r')
+			flags->r = true;
+		else if (*arg == 'R')
+			flags->R = true;
+		else if (*arg == 't')
+			flags->t = true;
+		else
+			return (flag_error(*arg), -1);
+		arg++;
 	}
-	ft_putendl(arg);
 	return (0);
 }
 
