@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 08:55:14 by padam             #+#    #+#             */
-/*   Updated: 2024/08/09 23:13:10 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/10 01:05:36 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,33 +20,32 @@ void	flag_error(char flag)
 	ft_putstr_fd("ls: ", 2);
 	ft_putstr_fd("invalid option -- '", 2);
 	ft_putstr_fd(&flag, 2);
-	ft_putstr_fd("'\n", 2);
+	ft_putendl_fd("'", 2);
 }
 
 /**
  * @brief Handles any long flags (--flag)
  * @param arg the string containing the flag
  * @param flags structure containing the flags
- * @return 0 on success, 1 on failure
+ * @return `0` on success, `1` on failure
 */
 int	long_flag(char *arg, t_flags *flags)
 {
-	//TODO'
 	(void)flags;
-	ft_putendl(arg);
-	return (0);
+	if (!*arg)
+		return (0);
+	ft_putstr_fd("ls: ", 2);
+	ft_putstr_fd("unrecognized option '--", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putendl_fd("'", 2);
+	return (1);
 }
 
-
-/**
- * @brief	checks if the character matches and sets flag accordingly
- * @return
-*/
 /**
  * @brief Handles any short flags (-flags)
  * @param arg the string containing the flags
  * @param flags structure containing the flags
- * @return 0 on success, 1 on failure
+ * @return `0` on success, `1` on failure
 */
 int	short_flag(char *arg, t_flags *flags)
 {
@@ -57,7 +56,11 @@ int	short_flag(char *arg, t_flags *flags)
 		else if (*arg == 'd')
 			flags->d = true;
 		else if (*arg == 'f')
+		{
 			flags->f = true;
+			flags->a = true;
+			flags->t = false;
+		}
 		else if (*arg == 'g')
 			flags->g = true;
 		else if (*arg == 'l')
@@ -71,7 +74,7 @@ int	short_flag(char *arg, t_flags *flags)
 		else if (*arg == 't')
 			flags->t = true;
 		else
-			return (flag_error(*arg), -1);
+			return (flag_error(*arg), 1);
 		arg++;
 	}
 	return (0);
@@ -81,44 +84,50 @@ int	short_flag(char *arg, t_flags *flags)
  * @brief set all flags acording to input
  * @param argv the arguments
  * @param flags structure containing the flags
- * @return the amount of non-flag arguments
+ * @return the amount of non-flag arguments, exits on error
 */
 int	set_flags(char **argv, t_flags *flags)
 {
-	int i;
+	int		i;
+	bool	error;
 
 	i = 0;
+	error = 0;
 	if (!argv)
 		return (-1);
-	while (argv[0])
+	while (argv[0] && !error)
 	{
 		if (argv[0][0] == '-')
 		{
 			if (!argv[0][1])
-				write(1, "a\n", 2);
+				i++;
 			else if (argv[0][1] == '-')
-				long_flag(argv[0] + 2, flags);
+				error = long_flag(argv[0] + 2, flags);
 			else
-				short_flag(argv[0] + 1, flags);
+				error = short_flag(argv[0] + 1, flags);
 		}
 		else
 			i++;
 		argv++;
 	}
+	if (error)
+		exit(2);
 	return i;
 }
 
 /**
  * @brief parses arguments lol
+ * @attention exits if incorrect flags
  * @param argv arguments array
  * @param flags structure containing the flags
- * @return returns a list of args
+ * @return list of non-flag args
 */
 char	**parse_arguments(char **argv, t_flags *flags)
 {
 	int i;
 
 	i = set_flags(argv, flags);
+	if (i == -1)
 	(void)i;
 	return argv;
 }
