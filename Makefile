@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/08/10 00:54:04 by padam            ###   ########.fr        #
+#    Updated: 2024/08/10 02:58:54 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ OBJ_PATH = obj
 
 OBJ_DIRS =
 
-SRCS_MAIN =	main.c parser.c
+SRCS_MAIN =	main.c parser.c list.c utils.c
 
 SRC_NAME =										$(SRCS_MAIN)	\
 #			$(addprefix ,							$())		\

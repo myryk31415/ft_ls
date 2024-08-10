@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:36:36 by padam             #+#    #+#             */
-/*   Updated: 2024/08/10 01:13:24 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/10 02:32:38 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ int main(int argc, char **argv)
 	parse_arguments(argv, &flags);
 	while (*(++argv))
 	{
-		if (!(argv[0][0] == '-' && !argv[0][1]))
+		if (!(argv[0][0] == '-' && argv[0][1]))
 		{
 			no_args = 0;
 			list_entity(*argv);
 		}
 	}
 	if (no_args)
-		list_entity("");
+		list_entity(".");
 }
