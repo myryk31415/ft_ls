@@ -6,11 +6,24 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 01:06:11 by padam             #+#    #+#             */
-/*   Updated: 2024/08/10 07:36:39 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/10 08:47:14 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+int	list_folder(char *path)
+{
+
+	(void)path;
+	// get all files from node
+
+	//sort
+
+	//print
+
+	//if -R call list folder on all folders
+}
 
 int	list_inodes(char *path)
 {

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 08:55:14 by padam             #+#    #+#             */
-/*   Updated: 2024/08/10 01:05:36 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/10 10:09:45 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int	short_flag(char *arg, t_flags *flags)
 			flags->f = true;
 			flags->a = true;
 			flags->t = false;
+			flags->u = false;
+			flags->g = false;
 		}
 		else if (*arg == 'g')
 			flags->g = true;
@@ -82,9 +84,10 @@ int	short_flag(char *arg, t_flags *flags)
 
 /**
  * @brief set all flags acording to input
+ * @attention exits if incorrect flags
  * @param argv the arguments
  * @param flags structure containing the flags
- * @return the amount of non-flag arguments, exits on error
+ * @return amount of non-flag arguments
 */
 int	set_flags(char **argv, t_flags *flags)
 {
@@ -120,14 +123,12 @@ int	set_flags(char **argv, t_flags *flags)
  * @attention exits if incorrect flags
  * @param argv arguments array
  * @param flags structure containing the flags
- * @return list of non-flag args
+ * @return amount of non-flag arguments
 */
-char	**parse_arguments(char **argv, t_flags *flags)
+int	parse_arguments(char **argv, t_flags *flags)
 {
 	int i;
 
 	i = set_flags(argv, flags);
-	if (i == -1)
-	(void)i;
-	return argv;
+	return (i);
 }
