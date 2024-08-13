@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 07:52:48 by padam             #+#    #+#             */
-/*   Updated: 2024/08/11 07:16:29 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/13 06:07:57 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,32 +43,32 @@ bool	compare_name(t_inode *a, t_inode *b)
  * @brief sorts an arrary of inodes
  * @param compare the function used to decide sorting
 */
-void	sort(t_inode *nodes, int (*compare)(t_inode*, t_inode*), int reverse)
+void	sort(t_inode **inodes, bool (*compare)(t_inode*, t_inode*), int reverse)
 {
-	t_inode *fkldajsk;
-	t_inode tmp;
+	t_inode **fkldajsk;
+	t_inode *tmp;
 
-	while (nodes)
+	while (*inodes)
 	{
-		fkldajsk = nodes;
+		fkldajsk = inodes;
 		while (++fkldajsk)
 		{
-			if (compare(nodes, fkldajsk) != reverse)
+			if (compare(*inodes, *fkldajsk) != reverse)
 			{
 				tmp = *fkldajsk;
-				*fkldajsk = *nodes;
-				*nodes = tmp;
+				*fkldajsk = *inodes;
+				*inodes = tmp;
 			}
 		}
-		nodes++;
+		inodes++;
 	}
 }
 
 /**
- * @brief sorts the nodes array according to the flags
+ * @brief sorts the inodes array according to the flags
  * @return
 */
-void	decide_sorting(t_inode *nodes, t_flags *flags)
+void	decide_sorting(t_inode **inodes, t_flags *flags)
 {
 	bool	reverse;
 
@@ -76,22 +76,22 @@ void	decide_sorting(t_inode *nodes, t_flags *flags)
 	if (flags->l || flags->g)
 	{
 		if (!flags->t)
-			sort(nodes, &compare_name, reverse);
+			sort(inodes, &compare_name, reverse);
 		else if (flags->u)
-			sort(nodes, &compare_last_accessed, reverse);
+			sort(inodes, &compare_last_accessed, reverse);
 		else
-			sort(nodes, &compare_last_modified, reverse);
+			sort(inodes, &compare_last_modified, reverse);
 	}
 	else if (flags->t)
 	{
 		if (flags->u)
-			sort(nodes, &compare_last_accessed, reverse);
+			sort(inodes, &compare_last_accessed, reverse);
 		else
-			sort(nodes, &compare_last_modified, reverse);
+			sort(inodes, &compare_last_modified, reverse);
 	}
 	else if (flags->u && !flags->f)
-		sort(nodes, &compare_last_accessed, reverse);
+		sort(inodes, &compare_last_accessed, reverse);
 	else if (!flags->f)
-		sort(nodes, &compare_name, reverse);
+		sort(inodes, &compare_name, reverse);
 
 }

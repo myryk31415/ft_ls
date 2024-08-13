@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:37:52 by padam             #+#    #+#             */
-/*   Updated: 2024/08/13 03:03:59 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/13 06:04:32 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,15 @@ typedef struct s_inode
 
 typedef struct s_dir_tmp
 {
-	char 		*name;
-	t_dir_tmp	*next;
+	char 				*name;
+	struct s_dir_tmp	*next;
 } t_dir_tmp;
 
-char	**parse_arguments(char **argv, t_flags *flags);
+int	parse_arguments(char **argv, t_flags *flags);
 
 // info
 t_inode	*path_to_inode(char *path, char *name);
+char	*inode_to_string(t_inode *inode, t_flags *flags);
 
 // list
 int		list_directory(char *path, t_flags *flags);
@@ -60,7 +61,7 @@ int		list_entity(char *path);
 void	print_group(char *folder_name, char **entries, t_flags *flags);
 
 // sort
-void	decide_sorting(t_inode *nodes, t_flags *flags);
+void	decide_sorting(t_inode **inodes, t_flags *flags);
 
 // utils
 void	err(void);

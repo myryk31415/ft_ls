@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:36:36 by padam             #+#    #+#             */
-/*   Updated: 2024/08/10 18:39:24 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/13 06:11:45 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,6 @@ void init_flags(t_flags *flags)
 		cast[i] = false;
 }
 
-t_inode	*args_to_node_array(char *argv, int l)
-{
-
-}
-
 /**
  * @brief main function of ft_ls
  * @return
@@ -44,7 +39,7 @@ int main(int argc, char **argv)
 	// no_args = 1;
 	(void)argc;
 	init_flags(&flags);
-	i = parse_arguments(argv, &flags);
+	i = parse_arguments(argv + 1, &flags);
 	if (i > 1)
 		flags.show_foldername = true;
 	if (i)
