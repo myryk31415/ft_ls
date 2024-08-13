@@ -6,14 +6,14 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/08/13 06:40:36 by padam            ###   ########.fr        #
+#    Updated: 2024/08/13 06:43:28 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ls
 
 CC = cc
-CFLAGS =  $(INCLUDES) -Wall -Wextra -Werror
+CFLAGS =  $(INCLUDES) -Wall -Wextra -Werror -g
 INCLUDES = -I./includes
 LIBS = -lreadline
 LIBFT_DIR = libft

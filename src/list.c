@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 01:06:11 by padam             #+#    #+#             */
-/*   Updated: 2024/08/13 06:15:26 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/13 07:43:11 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,15 +98,14 @@ int	list_directory(char *path, t_flags *flags)
 	inodes = ft_calloc(i + 1, sizeof(t_inode *));
 	if (!inodes)
 		return(err(), 1);
-	while (i)
+	while (i--)
 	{
 		inodes[i] = path_to_inode(path, name_lst->name);
 		if (!inodes[i])
-			return (inodes_free(inodes), 1);
+			return (inodes_free(inodes + i), 1);
 		tmp = name_lst;
 		name_lst = name_lst ->next;
 		free(tmp);
-		i--;
 	}
 	return (inodes_to_print(path, inodes, flags));
 }

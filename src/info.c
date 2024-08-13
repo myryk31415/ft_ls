@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 07:18:34 by padam             #+#    #+#             */
-/*   Updated: 2024/08/13 06:06:52 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/13 06:52:11 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ char *get_string_long(t_inode *inode, t_flags *flags)
 
 char	*inode_to_string(t_inode *inode, t_flags *flags)
 {
-	int i=1;while(i<4)i++;printf("%i",i);
 	if (flags->l || flags->g)
 		return (get_string_long(inode, flags));
 	return(inode->name);

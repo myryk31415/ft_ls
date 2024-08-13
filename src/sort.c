@@ -6,11 +6,34 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 07:52:48 by padam             #+#    #+#             */
-/*   Updated: 2024/08/13 06:07:57 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/13 07:18:04 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+int	ft_strcmp_ls(const char *s1, const char *s2)
+{
+	const unsigned char	*str1;
+	const unsigned char	*str2;
+
+	str1 = (const unsigned char *)s1;
+	str2 = (const unsigned char *)s2;
+	while (*str1 == '.')
+		str1++;
+	while (*str2 == '.')
+		str2++;
+	while (*str1 && ft_tolower(*str1) == ft_tolower(*str2))
+	{
+		str1++;
+		str2++;
+	}
+	if (ft_isalnum(*str1) && !ft_isalnum(*str2))
+		return (1);
+	if (!ft_isalnum(*str1) && ft_isalnum(*str2))
+		return (-1);
+	return (ft_tolower(*str1) - ft_tolower(*str2));
+}
 
 /**
  * @brief checks which file was+ modified last
@@ -18,7 +41,7 @@
 */
 bool	compare_last_modified(t_inode *a, t_inode *b)
 {
-	return (a->st.st_mtime > b->st.st_mtime);
+	return (a->st.st_mtime < b->st.st_mtime);
 }
 
 /**
@@ -27,7 +50,7 @@ bool	compare_last_modified(t_inode *a, t_inode *b)
 */
 bool	compare_last_accessed(t_inode *a, t_inode *b)
 {
-	return (a->st.st_atime > b->st.st_atime);
+	return (a->st.st_atime < b->st.st_atime);
 }
 
 /**
@@ -36,7 +59,16 @@ bool	compare_last_accessed(t_inode *a, t_inode *b)
 */
 bool	compare_name(t_inode *a, t_inode *b)
 {
-	return (ft_strcmp(a->name, b->name) > 0);
+	// int	j;
+	// int k;
+
+	// j = 0;
+	// while (a->name[j] == '.')
+	// 	j++;
+	// k = 0;
+	// while (b->name[k] == '.')
+	// 	k++;
+	return (ft_strcmp_ls(a->name, b->name) > 0);
 }
 
 /**
@@ -51,7 +83,8 @@ void	sort(t_inode **inodes, bool (*compare)(t_inode*, t_inode*), int reverse)
 	while (*inodes)
 	{
 		fkldajsk = inodes;
-		while (++fkldajsk)
+		fkldajsk++;
+		while (*fkldajsk)
 		{
 			if (compare(*inodes, *fkldajsk) != reverse)
 			{
@@ -59,6 +92,7 @@ void	sort(t_inode **inodes, bool (*compare)(t_inode*, t_inode*), int reverse)
 				*fkldajsk = *inodes;
 				*inodes = tmp;
 			}
+			fkldajsk++;
 		}
 		inodes++;
 	}
