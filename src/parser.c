@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 08:55:14 by padam             #+#    #+#             */
-/*   Updated: 2024/08/10 10:09:45 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/10 18:44:47 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /**
  * @brief prints the error messages for the flags
 */
-void	flag_error(char flag)
+void	short_flag_error(char flag)
 {
 	ft_putstr_fd("ls: ", 2);
 	ft_putstr_fd("invalid option -- '", 2);
@@ -72,11 +72,14 @@ int	short_flag(char *arg, t_flags *flags)
 		else if (*arg == 'r')
 			flags->r = true;
 		else if (*arg == 'R')
+		{
 			flags->R = true;
+			flags->show_foldername = true;
+		}
 		else if (*arg == 't')
 			flags->t = true;
 		else
-			return (flag_error(*arg), 1);
+			return (short_flag_error(*arg), 1);
 		arg++;
 	}
 	return (0);

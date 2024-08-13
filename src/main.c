@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:36:36 by padam             #+#    #+#             */
-/*   Updated: 2024/08/10 08:05:47 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/10 18:39:24 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,10 @@ void init_flags(t_flags *flags)
 		cast[i] = false;
 }
 
-
-int	separate_dirs(char **argv, t_flags *flags)
+t_inode	*args_to_node_array(char *argv, int l)
 {
 
 }
-
 
 /**
  * @brief main function of ft_ls
@@ -53,12 +51,14 @@ int main(int argc, char **argv)
 	{
 		//make list
 
+		//sort
+
 		//print only files
 
-		//list_folder on folders
+		//list_directory on folders
 	}
 	else
-		list_folder(".", &flags);
+		list_directory(".", &flags);
 
 	// while (*(++argv))
 	// {
