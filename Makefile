@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/08/13 06:43:28 by padam            ###   ########.fr        #
+#    Updated: 2024/08/24 08:04:12 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,14 @@ LIBFT_DIR = libft
 SRC_PATH = src
 OBJ_PATH = obj
 
-OBJ_DIRS =
+OBJ_DIRS = info
 
-SRCS_MAIN =	main.c parser.c print.c list.c utils.c info.c sort.c
+SRCS_MAIN =	main.c parser.c print.c list.c utils.c sort.c
 
-SRC_NAME =										$(SRCS_MAIN)	\
-#			$(addprefix ,							$())		\
+SRCS_INFO = info.c long.c
+
+SRC_NAME =									$(SRCS_MAIN)	\
+			$(addprefix info/,				$(SRCS_INFO))	\
 
 RED = \033[1;31m
 GREEN = \033[1;32m

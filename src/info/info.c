@@ -6,17 +6,40 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 07:18:34 by padam             #+#    #+#             */
-/*   Updated: 2024/08/13 06:52:11 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/13 19:59:57by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-char *get_string_long(t_inode *inode, t_flags *flags)
+/**
+ * @brief writes the info from the inode into a string array, also sets flags->column_width
+ * @return
+*/
+char	*get_string_long(t_inode *inode, t_flags *flags)
 {
-	(void)inode;
-	(void)flags;
-	return("");
+	char	*columns[10];
+	int		i;
+	int		len;
+
+	i = 0;
+	columns[i++] = get_rights(inode);
+	// columns[i++] = get_links(inode);
+	// if (!flags->g)
+	// 	columns[i++] = get_user(inode);
+	// columns[i++] = get_group(inode);
+	// columns[i++] = get_size(inode);
+	// columns[i++] = get_date(inode, flags);
+	columns[i++] = inode->name;
+	columns[i] = NULL;
+	while (i--)
+	{
+		len = ft_strlen(columns[i]);
+		if (len > flags->column_width[i])
+			flags->column_width[i] = len;
+	}
+	return(*columns);
+	// return("");
 }
 
 char	*inode_to_string(t_inode *inode, t_flags *flags)
@@ -26,6 +49,10 @@ char	*inode_to_string(t_inode *inode, t_flags *flags)
 	return(inode->name);
 }
 
+/**
+ * @brief fills a inode struct with the info for the path
+ * @return the populated stucture, `NULL` on failure
+*/
 t_inode	*path_to_inode(char *path, char *name)
 {
 	t_inode 	*inode;
