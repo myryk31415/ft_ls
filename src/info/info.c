@@ -19,16 +19,18 @@
 char	*get_string_long(t_inode *inode, t_flags *flags)
 {
 	char	*columns[10];
+	char	*joined_string;
 	int		i;
 	int		len;
 
 	i = 0;
 	columns[i++] = get_rights(inode);
-	// columns[i++] = get_links(inode);
+	// TODO error
+	columns[i++] = ft_ultoa(inode->st.st_nlink);
 	// if (!flags->g)
-	// 	columns[i++] = get_user(inode);
-	// columns[i++] = get_group(inode);
-	// columns[i++] = get_size(inode);
+	columns[i++] = get_user(inode);
+	columns[i++] = get_group(inode);
+	columns[i++] = ft_ltoa(inode->st.st_size);
 	// columns[i++] = get_date(inode, flags);
 	columns[i++] = inode->name;
 	columns[i] = NULL;
@@ -38,8 +40,10 @@ char	*get_string_long(t_inode *inode, t_flags *flags)
 		if (len > flags->column_width[i])
 			flags->column_width[i] = len;
 	}
-	return(*columns);
-	// return("");
+	joined_string = ft_arrjoin(columns, " ");
+	// while(i < 10)
+	// 	free(columns[i++]);
+	return(joined_string);
 }
 
 char	*inode_to_string(t_inode *inode, t_flags *flags)

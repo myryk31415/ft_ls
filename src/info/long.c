@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 08:00:10 by padam             #+#    #+#             */
-/*   Updated: 2024/08/24 08:00:32 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/24 08:51:16 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,24 @@ char	*get_rights(t_inode *inode)
 	modeval[9] = check_right(perm & S_IXOTH, 'x');
 	modeval[10] = '\0';
 	return (modeval);
+}
+
+char	*get_user(t_inode *inode)
+{
+	struct passwd	*passwd;
+
+	passwd = getpwuid(inode->st.st_uid);
+	if (!passwd)
+		return (err(), NULL);
+	return(ft_strdup(passwd->pw_name));
+}
+
+char	*get_group(t_inode *inode)
+{
+	struct group	*group;
+
+	group = getgrgid(inode->st.st_gid);
+	if (!group)
+		return (err(), NULL);
+	return(ft_strdup(group->gr_name));
 }
