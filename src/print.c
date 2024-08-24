@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:11:24 by padam             #+#    #+#             */
-/*   Updated: 2024/08/13 07:19:28 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/23 19:49:26 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /**
  * @brief prints one group of files e.g. lists one folder
  * @param entries string array containing the gathered info got each inode
-*/
+ */
 void	print_group(char *folder_name, char **entries, t_flags *flags)
 {
 	if (flags->show_foldername)

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:37:52 by padam             #+#    #+#             */
-/*   Updated: 2024/08/13 06:04:32 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/24 08:02:14 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,17 @@
 
 typedef struct s_flags
 {
-	bool a;
-	bool d;
-	bool f;
-	bool g;
-	bool l;
-	bool u;
-	bool r;
-	bool R;
-	bool t;
-	bool show_foldername;
+	bool	a;
+	bool	d;
+	bool	f;
+	bool	g;
+	bool	l;
+	bool	u;
+	bool	r;
+	bool	R;
+	bool	t;
+	bool	show_foldername;
+	int		column_width[10];
 } t_flags;
 
 typedef struct s_inode
@@ -51,6 +52,7 @@ int	parse_arguments(char **argv, t_flags *flags);
 
 // info
 t_inode	*path_to_inode(char *path, char *name);
+char	*get_rights(t_inode *inode);
 char	*inode_to_string(t_inode *inode, t_flags *flags);
 
 // list

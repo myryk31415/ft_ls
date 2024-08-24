@@ -6,12 +6,15 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 02:57:48 by padam             #+#    #+#             */
-/*   Updated: 2024/08/10 02:58:39 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/13 20:37:35 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
+/**
+ * @brief calles `perror("ls")`
+*/
 void	err(void)
 {
 	perror("ls");
