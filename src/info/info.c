@@ -76,7 +76,7 @@ t_inode	*path_to_inode(char *path, char *name)
 		// free(inode->name);
 		return (NULL);
 	}
-	if (stat(inode->path, &inode->st) == -1)
+	if (lstat(inode->path, &inode->st) == -1)
 	{
 		err();
 		// free(inode->name);
