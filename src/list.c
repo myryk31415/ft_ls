@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 01:06:11 by padam             #+#    #+#             */
-/*   Updated: 2024/08/25 03:44:20 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/25 06:16:06 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,16 @@ t_dir_tmp	*store_name(char *name, t_dir_tmp *lst)
 	return (new);
 }
 
+/**
+ * @brief gathers info fo the inodes and prints everything
+ * @return `0` on success, `1` on error
+ */
 int	inodes_to_print(char *path, t_inode **inodes, t_flags *flags)
 {
 	char	**entries;
 	int		i;
+	long	blocks;
+	char	*blocks_str;
 
 	i = 0;
 	while (inodes[i])
@@ -45,13 +51,14 @@ int	inodes_to_print(char *path, t_inode **inodes, t_flags *flags)
 	entries = ft_calloc(i + 1, sizeof(char *));
 	if (!entries)
 		return (err(), 1);
-
 	//sort
 	decide_sorting(inodes, flags);
 	//get info
 	i = 0;
+	blocks = 0;
 	while (inodes[i])
 	{
+		blocks += inodes[i]->st.st_blocks;
 		entries[i] = inode_to_string(inodes[i], flags);
 		if (!entries[i])
 		{
@@ -62,9 +69,9 @@ int	inodes_to_print(char *path, t_inode **inodes, t_flags *flags)
 		}
 		i++;
 	}
-	//print
-	print_group(path, entries, flags);
-	//if -R call list folder on all folders
+	//WHY IS IT DOUBLE THE SIZE??
+	blocks_str = ft_ltoa(blocks / 2);
+	print_group(path, entries, blocks_str, flags);
 	if (!flags->R)
 		return (0);
 	while(*inodes)
@@ -98,8 +105,11 @@ int	list_directory(char *path, t_flags *flags)
 	dirent = readdir(dir);
 	while (dirent)
 	{
-		i++;
-		name_lst = store_name(dirent->d_name, name_lst);
+		if (flags->a || dirent->d_name[0] != '.')
+		{
+			i++;
+			name_lst = store_name(dirent->d_name, name_lst);
+		}
 		dirent = readdir(dir);
 	}
 	// gotta free name_lst as well

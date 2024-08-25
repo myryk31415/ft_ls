@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 08:00:10 by padam             #+#    #+#             */
-/*   Updated: 2024/08/25 03:21:24 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/25 05:39:39 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ char	*get_date(t_inode *inode, t_flags *flags)
 	if (current_time - *selected_time > RECENT)
 		recent = false;
 	tmp_time = ctime(selected_time);
-	// ft_printf(tmp_time);
 	if (!tmp_time)
 		return(err(), NULL);
 	composed_time = ft_calloc(13, 1);
@@ -90,6 +89,5 @@ char	*get_date(t_inode *inode, t_flags *flags)
 		ft_strlcat(composed_time, tmp_time + 11, 13);
 	else
 		ft_strlcat(composed_time, tmp_time + 19, 13);
-	// ft_strlcat(composed_time, tmp_time + 8, 9);
 	return (composed_time);
 }

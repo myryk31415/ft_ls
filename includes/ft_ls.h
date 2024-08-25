@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:37:52 by padam             #+#    #+#             */
-/*   Updated: 2024/08/25 03:24:22 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/25 05:45:13 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int		list_directory(char *path, t_flags *flags);
 int		list_entity(char *path);
 
 // print
-void	print_group(char *folder_name, char **entries, t_flags *flags);
+void	print_group(char *folder_name, char **entries, char *blocks, t_flags *flags);
 
 // sort
 void	decide_sorting(t_inode **inodes, t_flags *flags);
