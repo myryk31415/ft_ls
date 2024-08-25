@@ -6,12 +6,16 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 08:00:10 by padam             #+#    #+#             */
-/*   Updated: 2024/08/25 05:39:39 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/25 08:51:28 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
+/**
+ * @brief simple helper function to replace ternary operator
+ * @return char value if permission is true, else `-`
+ */
 char	check_right(bool permission, char value)
 {
 	if (permission)
@@ -19,6 +23,10 @@ char	check_right(bool permission, char value)
 	return('-');
 }
 
+/**
+ * @brief gathers access rights
+ * @return string containing `d`. `r`, `w`, `x`, `-`
+ */
 char	*get_rights(t_inode *inode)
 {
 	unsigned int	perm;
@@ -42,6 +50,10 @@ char	*get_rights(t_inode *inode)
 	return (modeval);
 }
 
+/**
+ * @brief uses the uid to get the username
+ * @return username as string
+ */
 char	*get_user(t_inode *inode)
 {
 	struct passwd	*passwd;
@@ -52,6 +64,10 @@ char	*get_user(t_inode *inode)
 	return(ft_strdup(passwd->pw_name));
 }
 
+/**
+ * @brief uses the gid to get the groupname
+ * @return groupname as string
+ */
 char	*get_group(t_inode *inode)
 {
 	struct group	*group;
@@ -62,6 +78,10 @@ char	*get_group(t_inode *inode)
 	return(ft_strdup(group->gr_name));
 }
 
+/**
+ * @brief gets time according to flags, composes it into right order
+ * @return the important parts of the date in correct order
+ */
 char	*get_date(t_inode *inode, t_flags *flags)
 {
 	time_t	current_time;

@@ -6,12 +6,15 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 07:52:48 by padam             #+#    #+#             */
-/*   Updated: 2024/08/13 07:18:04 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/25 08:56:32 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
+/**
+ * @brief strcmp adjusted to the needs of ls. Ignores starting `.`, groups caps and noncaps
+ */
 int	ft_strcmp_ls(const char *s1, const char *s2)
 {
 	const unsigned char	*str1;

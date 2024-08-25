@@ -46,6 +46,10 @@ char	*get_string_long(t_inode *inode, t_flags *flags)
 	return(joined_string);
 }
 
+/**
+ * @brief gets name/information depending on flag from inode
+ * @return a string containing the necessary information for the entry
+ */
 char	*inode_to_string(t_inode *inode, t_flags *flags)
 {
 	if (flags->l || flags->g)

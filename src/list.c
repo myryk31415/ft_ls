@@ -6,12 +6,15 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 01:06:11 by padam             #+#    #+#             */
-/*   Updated: 2024/08/25 06:16:06 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/25 08:53:39 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
+/**
+ * @brief frees an array of inodes
+ */
 void	inodes_free(t_inode **inodes)
 {
 	while (*inodes)
@@ -22,6 +25,10 @@ void	inodes_free(t_inode **inodes)
 	free(inodes);
 }
 
+/**
+ * @brief allocates new `t_dir_tmp` struct, adds the name and prepends it to the linked list
+ * @return link to the new struct
+ */
 t_dir_tmp	*store_name(char *name, t_dir_tmp *lst)
 {
 	t_dir_tmp *new;
