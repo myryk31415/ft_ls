@@ -14,3 +14,23 @@ The flags ft_ls is able to handle, entries marked with `!` are mandatory.
 * !-R: list subdirectories recursively
 * !-t: sort by time, newest first
 * -u: with -lt: sort by, and show, access time; with -l: show access time and sort by name; otherwise: sort by access time, newest first
+
+
+//sorting
+-f
+-r
+-t
+-u
+
+//listing
+-R
+-d
+-a
+
+//info
+-l
+-g
+-t
+-u
+-ACL + extended attributes
+-color?

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 01:06:11 by padam             #+#    #+#             */
-/*   Updated: 2024/08/13 07:43:11 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/25 03:44:20 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,17 @@ int	inodes_to_print(char *path, t_inode **inodes, t_flags *flags)
 	}
 	//print
 	print_group(path, entries, flags);
-	return(0);
 	//if -R call list folder on all folders
+	if (!flags->R)
+		return (0);
+	while(*inodes)
+	{
+		if (S_ISDIR((*inodes)->st.st_mode) && ft_strcmp((*inodes)->name, ".") && ft_strcmp((*inodes)->name,".."))
+			if (list_directory((*inodes)->path, flags) == -1)
+				return (-1);
+		inodes++;
+	}
+	return(0);
 }
 
 /**
@@ -101,13 +110,15 @@ int	list_directory(char *path, t_flags *flags)
 	while (i--)
 	{
 		inodes[i] = path_to_inode(path, name_lst->name);
-		if (!inodes[i])
-			return (inodes_free(inodes + i), 1);
+		// if (!inodes[i])
+		// 	return (inodes_free(inodes + i), 1);
 		tmp = name_lst;
 		name_lst = name_lst ->next;
 		free(tmp);
 	}
-	return (inodes_to_print(path, inodes, flags));
+	if (inodes_to_print(path, inodes, flags) == -1)
+		return (-1);
+	return (0);
 }
 
 // int	list_inodes(char *path)

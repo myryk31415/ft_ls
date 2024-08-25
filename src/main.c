@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:36:36 by padam             #+#    #+#             */
-/*   Updated: 2024/08/13 06:11:45 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/25 04:08:44 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void init_flags(t_flags *flags)
 	bool	*cast;
 
 	cast = (bool *)flags;
-
 	i = sizeof(t_flags);
 	while (i--)
 		cast[i] = false;
+	flags->first_entry = true;
 }
 
 /**

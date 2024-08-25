@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 08:00:10 by padam             #+#    #+#             */
-/*   Updated: 2024/08/24 08:51:16 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/25 03:21:24 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,36 @@ char	*get_group(t_inode *inode)
 	if (!group)
 		return (err(), NULL);
 	return(ft_strdup(group->gr_name));
+}
+
+char	*get_date(t_inode *inode, t_flags *flags)
+{
+	time_t	current_time;
+	time_t	*selected_time;
+	char	*tmp_time;
+	char	*composed_time;
+	bool	recent;
+
+	selected_time = &inode->st.st_mtime;
+	if (flags->u)
+		selected_time = &inode->st.st_atime;
+	current_time = time(NULL);
+	if (current_time == -1)
+		return (err(), NULL);
+	recent = true;
+	if (current_time - *selected_time > RECENT)
+		recent = false;
+	tmp_time = ctime(selected_time);
+	// ft_printf(tmp_time);
+	if (!tmp_time)
+		return(err(), NULL);
+	composed_time = ft_calloc(13, 1);
+	ft_strlcpy(composed_time, tmp_time + 4, 7);
+	ft_strlcat(composed_time, " ", 8);
+	if (recent)
+		ft_strlcat(composed_time, tmp_time + 11, 13);
+	else
+		ft_strlcat(composed_time, tmp_time + 19, 13);
+	// ft_strlcat(composed_time, tmp_time + 8, 9);
+	return (composed_time);
 }

@@ -27,11 +27,11 @@ char	*get_string_long(t_inode *inode, t_flags *flags)
 	columns[i++] = get_rights(inode);
 	// TODO error
 	columns[i++] = ft_ultoa(inode->st.st_nlink);
-	// if (!flags->g)
-	columns[i++] = get_user(inode);
+	if (!flags->g)
+		columns[i++] = get_user(inode);
 	columns[i++] = get_group(inode);
 	columns[i++] = ft_ltoa(inode->st.st_size);
-	// columns[i++] = get_date(inode, flags);
+	columns[i++] = get_date(inode, flags);
 	columns[i++] = inode->name;
 	columns[i] = NULL;
 	while (i--)
@@ -65,19 +65,19 @@ t_inode	*path_to_inode(char *path, char *name)
 	if (!inode)
 		return (err(), NULL);
 	inode->name = name;
-	if (stat(name, &inode->st) == -1)
-	{
-		err();
-		free(inode->name);
-		return (NULL);
-	}
 	inode->path = ft_path_append(path, name);
 	if (!inode->path)
 	{
 		err();
-		free(inode->name);
+		// free(inode->name);
+		return (NULL);
+	}
+	if (stat(inode->path, &inode->st) == -1)
+	{
+		err();
+		// free(inode->name);
+		// free(inode->path);
 		return (NULL);
 	}
 	return (inode);
 }
-

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:37:52 by padam             #+#    #+#             */
-/*   Updated: 2024/08/24 08:51:30 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/25 03:24:22 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@
 # include <sys/stat.h>
 # include <pwd.h>
 # include <grp.h>
+# include <time.h>
 # include "../libft/includes/libft.h"
+
+# define RECENT 15778476
 
 typedef struct s_flags
 {
@@ -33,6 +36,7 @@ typedef struct s_flags
 	bool	r;
 	bool	R;
 	bool	t;
+	bool	first_entry;
 	bool	show_foldername;
 	int		column_width[10];
 } t_flags;
@@ -60,6 +64,7 @@ char	*inode_to_string(t_inode *inode, t_flags *flags);
 char	*get_rights(t_inode *inode);
 char	*get_user(t_inode *inode);
 char	*get_group(t_inode *inode);
+char	*get_date(t_inode *inode, t_flags *flags);
 
 // list
 int		list_directory(char *path, t_flags *flags);
