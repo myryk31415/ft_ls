@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 07:52:48 by padam             #+#    #+#             */
-/*   Updated: 2024/08/25 08:56:32 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/26 04:03:43 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	decide_sorting(t_inode **inodes, t_flags *flags)
 	bool	reverse;
 
 	reverse = (flags->r && !flags->f);
-	if (flags->l || flags->g)
+	if (flags->l)
 	{
 		if (!flags->t)
 			sort(inodes, &compare_name, reverse);

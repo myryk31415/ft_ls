@@ -16,16 +16,16 @@
  * @brief writes the info from the inode into a string array, also sets flags->column_width
  * @return
 */
-char	*get_string_long(t_inode *inode, t_flags *flags)
+char	**get_string_long(t_inode *inode, t_flags *flags)
 {
-	char	*columns[10];
-	char	*joined_string;
+	char	**columns;
 	int		i;
 	int		len;
 
 	i = 0;
-	columns[i++] = get_rights(inode);
 	// TODO error
+	columns = ft_calloc(10, sizeof(char *));
+	columns[i++] = get_rights(inode);
 	columns[i++] = ft_ultoa(inode->st.st_nlink);
 	if (!flags->g)
 		columns[i++] = get_user(inode);
@@ -40,21 +40,61 @@ char	*get_string_long(t_inode *inode, t_flags *flags)
 		if (len > flags->column_width[i])
 			flags->column_width[i] = len;
 	}
-	joined_string = ft_arrjoin(columns, " ");
 	// while(i < 10)
 	// 	free(columns[i++]);
-	return(joined_string);
+	return(columns);
 }
 
 /**
  * @brief gets name/information depending on flag from inode
  * @return a string containing the necessary information for the entry
  */
-char	*inode_to_string(t_inode *inode, t_flags *flags)
+char	**inode_to_string(t_inode *inode, t_flags *flags)
 {
-	if (flags->l || flags->g)
+	if (flags->l)
 		return (get_string_long(inode, flags));
-	return(inode->name);
+	return((char **)inode->name);
+}
+
+char	**inode_arr_to_string_arr(t_inode **inodes, long *blocks, t_flags *flags)
+{
+	char	**entries;
+	char	***gathered_entries;
+	int		i;
+
+	i = 0;
+	while (inodes[i])
+		i++;
+	if (flags->l)
+	{
+		gathered_entries = ft_calloc(i+1, sizeof(char **));
+		if (!gathered_entries)
+			return (err(), NULL);
+	}
+	else
+	{
+		entries = ft_calloc(i + 1, sizeof(char *));
+		if (!entries)
+			return (err(), NULL);
+	}
+	i = 0;
+	*blocks = 0;
+	while (inodes[i])
+	{
+		*blocks += inodes[i]->st.st_blocks;
+		if (flags->l)
+			gathered_entries[i] = get_string_long(inodes[i], flags);
+		else
+			entries[i] = inodes[i]->name;
+		i++;
+	}
+	if (flags->l)
+	{
+		entries = (char **)gathered_entries;
+		while (i--)
+			entries[i] = ft_arrjoin(gathered_entries[i], " ");
+	}
+	return (entries);
 }
 
 /**

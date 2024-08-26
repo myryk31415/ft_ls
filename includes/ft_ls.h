@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:37:52 by padam             #+#    #+#             */
-/*   Updated: 2024/08/25 05:45:13 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/25 19:24:24 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int	parse_arguments(char **argv, t_flags *flags);
 
 // info
 t_inode	*path_to_inode(char *path, char *name);
-char	*inode_to_string(t_inode *inode, t_flags *flags);
+char	**inode_to_string(t_inode *inode, t_flags *flags);
+char	**inode_arr_to_string_arr(t_inode **inodes, long *blocks, t_flags *flags);
 
 // long
 char	*get_rights(t_inode *inode);

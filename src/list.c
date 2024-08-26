@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 01:06:11 by padam             #+#    #+#             */
-/*   Updated: 2024/08/25 08:53:39 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/25 19:28:55 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,34 +48,12 @@ t_dir_tmp	*store_name(char *name, t_dir_tmp *lst)
 int	inodes_to_print(char *path, t_inode **inodes, t_flags *flags)
 {
 	char	**entries;
-	int		i;
 	long	blocks;
 	char	*blocks_str;
 
-	i = 0;
-	while (inodes[i])
-		i++;
-	entries = ft_calloc(i + 1, sizeof(char *));
-	if (!entries)
-		return (err(), 1);
 	//sort
 	decide_sorting(inodes, flags);
-	//get info
-	i = 0;
-	blocks = 0;
-	while (inodes[i])
-	{
-		blocks += inodes[i]->st.st_blocks;
-		entries[i] = inode_to_string(inodes[i], flags);
-		if (!entries[i])
-		{
-			while (i--)
-				free(entries[i]);
-			free(entries);
-			return (1);
-		}
-		i++;
-	}
+	entries = inode_arr_to_string_arr(inodes, &blocks, flags);
 	//WHY IS IT DOUBLE THE SIZE??
 	blocks_str = ft_ltoa(blocks / 2);
 	print_group(path, entries, blocks_str, flags);
