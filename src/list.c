@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 01:06:11 by padam             #+#    #+#             */
-/*   Updated: 2024/08/25 19:28:55 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/26 07:44:00 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,22 @@ void	inodes_free(t_inode **inodes)
 }
 
 /**
+ * @brief frees the linked list
+ */
+void	list_free(t_dir_tmp *list)
+{
+	t_dir_tmp	*tmp;
+
+	while (list)
+	{
+		tmp = list;
+		free(list->name);
+		list = list->next;
+		free(tmp);
+	}
+}
+
+/**
  * @brief allocates new `t_dir_tmp` struct, adds the name and prepends it to the linked list
  * @return link to the new struct
  */
@@ -35,7 +51,10 @@ t_dir_tmp	*store_name(char *name, t_dir_tmp *lst)
 
 	new = ft_calloc(1, sizeof(t_dir_tmp));
 	if (!new)
+	{
+		list_free(lst);
 		return(err(), NULL);
+	}
 	new->name = ft_strdup(name);
 	new->next = lst;
 	return (new);
@@ -70,50 +89,81 @@ int	inodes_to_print(char *path, t_inode **inodes, t_flags *flags)
 }
 
 /**
- * @brief gets all the inodes of a directory and lists them
- * @return `0` on success, `1` on failure
-*/
-int	list_directory(char *path, t_flags *flags)
+ * @brief reads all entries of the directory stream of path, also sets count accordingly
+ * @attention returned list is in reverse order
+ * @return linked list with all the names
+ */
+t_dir_tmp	*path_to_list(char *path, int *count, t_flags *flags)
 {
 	DIR 			*dir;
 	struct dirent	*dirent;
 	t_dir_tmp		*name_lst;
-	t_dir_tmp		*tmp;
-	int				i;
-	t_inode			**inodes;
 
-	i = 0;
+	*count = 0;
 	name_lst = NULL;
 	dir = opendir(path);
 	if (!dir)
-		return (err(), 1);
+		return (err(), NULL);
 	dirent = readdir(dir);
 	while (dirent)
 	{
 		if (flags->a || dirent->d_name[0] != '.')
 		{
-			i++;
+			(*count)++;
 			name_lst = store_name(dirent->d_name, name_lst);
 		}
 		dirent = readdir(dir);
 	}
 	// gotta free name_lst as well
-	closedir(dir);
-	inodes = ft_calloc(i + 1, sizeof(t_inode *));
+	if (closedir(dir) == -1)
+		return (err(), NULL);
+	return (name_lst);
+}
+
+/**
+ * @brief gets all the inodes of a directory and lists them
+ * @return `0` on success, `1` on failure
+*/
+int	list_directory(char *path, t_flags *flags)
+{
+	// DIR 			*dir;
+	// struct dirent	*dirent;
+	t_dir_tmp		*name_lst;
+	t_dir_tmp		*tmp;
+	int				count;
+	t_inode			**inodes;
+
+	name_lst = path_to_list(path, &count, flags);
+	// count = 0;
+	// name_lst = NULL;
+	// dir = opendir(path);
+	// if (!dir)
+	// 	return (err(), 1);
+	// dirent = readdir(dir);
+	// while (dirent)
+	// {
+	// 	if (flags->a || dirent->d_name[0] != '.')
+	// 	{
+	// 		count++;
+	// 		name_lst = store_name(dirent->d_name, name_lst);
+	// 	}
+	// 	dirent = readdir(dir);
+	// }
+	// closedir(dir);
+	// gotta free name_lst as well
+	inodes = ft_calloc(count + 1, sizeof(t_inode *));
 	if (!inodes)
 		return(err(), 1);
-	while (i--)
+	while (count--)
 	{
-		inodes[i] = path_to_inode(path, name_lst->name);
+		inodes[count] = path_to_inode(path, name_lst->name);
 		// if (!inodes[i])
 		// 	return (inodes_free(inodes + i), 1);
 		tmp = name_lst;
-		name_lst = name_lst ->next;
+		name_lst = name_lst->next;
 		free(tmp);
 	}
-	if (inodes_to_print(path, inodes, flags) == -1)
-		return (-1);
-	return (0);
+	return (inodes_to_print(path, inodes, flags));
 }
 
 // int	list_inodes(char *path)

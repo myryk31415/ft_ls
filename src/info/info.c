@@ -45,15 +45,42 @@ char	**get_string_long(t_inode *inode, t_flags *flags)
 	return(columns);
 }
 
-/**
- * @brief gets name/information depending on flag from inode
- * @return a string containing the necessary information for the entry
- */
-char	**inode_to_string(t_inode *inode, t_flags *flags)
+int	columns_join(char ***entries, t_flags *flags)
 {
-	if (flags->l)
-		return (get_string_long(inode, flags));
-	return((char **)inode->name);
+	int	i;
+	int		total_length;
+	char	*tmp;
+	int		diff;
+
+	i = 0;
+	total_length = 0;
+	while (i < 10)
+		total_length += flags->column_width[i++] + 1;
+	while (*entries)
+	{
+		i = 0;
+		tmp = ft_calloc(total_length, 1);
+		if (!tmp)
+			return (1);
+		while ((*entries)[i])
+		{
+			diff = ft_abs_int(flags->column_width[i]) - ft_strlen((*entries)[i]);
+			if (flags->column_width[i] < 0 && diff > 0)
+				while (diff--)
+					ft_strlcat(tmp, " ", total_length);
+			ft_strlcat(tmp, (*entries)[i], total_length);
+			free((*entries)[i]);
+			if (flags->column_width[i] > 0 && diff > 0)
+				while (diff--)
+					ft_strlcat(tmp, " ", total_length);
+			ft_strlcat(tmp, " ", total_length);
+			i++;
+		}
+		free(*entries);
+		*entries = (char **)tmp;
+		entries++;
+	}
+	return (0);
 }
 
 char	**inode_arr_to_string_arr(t_inode **inodes, long *blocks, t_flags *flags)
@@ -91,8 +118,9 @@ char	**inode_arr_to_string_arr(t_inode **inodes, long *blocks, t_flags *flags)
 	if (flags->l)
 	{
 		entries = (char **)gathered_entries;
-		while (i--)
-			entries[i] = ft_arrjoin(gathered_entries[i], " ");
+		columns_join(gathered_entries, flags);
+		// while (entries[i])
+			// entries[i] = ft_arrjoin(gathered_entries[i++], " ");
 	}
 	return (entries);
 }

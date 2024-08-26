@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:36:36 by padam             #+#    #+#             */
-/*   Updated: 2024/08/25 04:08:44 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/26 07:24:23 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,4 @@ int main(int argc, char **argv)
 	}
 	else
 		list_directory(".", &flags);
-
-	// while (*(++argv))
-	// {
-	// 	if (!(argv[0][0] == '-' && argv[0][1]))
-	// 	{
-	// 		no_args = 0;
-	// 		list_entity(*argv);
-	// 	}
-	// }
-	// if (no_args)
-	// 	list_entity(".");
 }
