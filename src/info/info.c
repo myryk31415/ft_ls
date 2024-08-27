@@ -32,7 +32,7 @@ char	**get_string_long(t_inode *inode, t_flags *flags)
 	columns[i++] = get_group(inode);
 	columns[i++] = ft_ltoa(inode->st.st_size);
 	columns[i++] = get_date(inode, flags);
-	columns[i++] = inode->name;
+	columns[i++] = ft_strdup(inode->name);
 	columns[i] = NULL;
 	while (i--)
 	{
@@ -83,15 +83,23 @@ int	columns_join(char ***entries, t_flags *flags)
 	return (0);
 }
 
-char	**inode_arr_to_string_arr(t_inode **inodes, long *blocks, t_flags *flags)
+char	**inode_arr_to_string_arr(t_inode **inodes, long *blocks, int no_directories, t_flags *flags)
 {
 	char	**entries;
 	char	***gathered_entries;
 	int		i;
+	int		j;
 
+	j = 0;
 	i = 0;
-	while (inodes[i])
-		i++;
+	while (inodes[j])
+	{
+		if (!inodes[j]->error && !(no_directories && S_ISDIR(inodes[j]->st.st_mode)))
+			i++;
+		j++;
+	}
+	if (!i)
+		return (NULL);
 	if (flags->l)
 	{
 		gathered_entries = ft_calloc(i+1, sizeof(char **));
@@ -104,16 +112,23 @@ char	**inode_arr_to_string_arr(t_inode **inodes, long *blocks, t_flags *flags)
 		if (!entries)
 			return (err(), NULL);
 	}
+	j = 0;
 	i = 0;
-	*blocks = 0;
-	while (inodes[i])
+	if (blocks)
+		*blocks = 0;
+	while (inodes[j])
 	{
-		*blocks += inodes[i]->st.st_blocks;
-		if (flags->l)
-			gathered_entries[i] = get_string_long(inodes[i], flags);
-		else
-			entries[i] = inodes[i]->name;
-		i++;
+		if (!inodes[j]->error && !(no_directories && S_ISDIR(inodes[j]->st.st_mode)))
+		{
+			if (blocks)
+				*blocks += inodes[j]->st.st_blocks;
+			if (flags->l)
+				gathered_entries[i] = get_string_long(inodes[j], flags);
+			else
+				entries[i] = ft_strdup(inodes[j]->name);
+			i++;
+		}
+		j++;
 	}
 	if (flags->l)
 	{
@@ -136,6 +151,7 @@ t_inode	*path_to_inode(char *path, char *name)
 	inode = ft_calloc(1, sizeof(t_inode));
 	if (!inode)
 		return (err(), NULL);
+	inode->error = false;
 	inode->name = name;
 	inode->path = ft_path_append(path, name);
 	if (!inode->path)
@@ -146,10 +162,11 @@ t_inode	*path_to_inode(char *path, char *name)
 	}
 	if (lstat(inode->path, &inode->st) == -1)
 	{
-		err();
+		file_not_found(inode->path);
+		inode->error = true;
 		// free(inode->name);
 		// free(inode->path);
-		return (NULL);
+		// return (NULL);
 	}
 	return (inode);
 }

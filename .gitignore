@@ -1,5 +1,6 @@
 ft_ls
 .vscode/
+vgcore.*
 
 # Prerequisites
 *.d
