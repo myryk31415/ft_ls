@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:36:36 by padam             #+#    #+#             */
-/*   Updated: 2024/08/27 05:58:48 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/27 08:31:10 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,29 @@ int	test(t_inode **inodes, char **names)
 	return (0);
 }
 
+int	input_list(int count, char **paths, t_flags *flags)
+{
+	t_inode	**inodes;
+	char	**entries;
+
+	//make list
+	inodes = ft_calloc(count + 1, sizeof(t_inode **));
+	if (!inodes)
+		return(err(), 1);
+	if (test(inodes, paths))
+		return (1);
+	//sort
+	decide_sorting(inodes, flags);
+	//print only files
+	entries = inode_arr_to_string_arr(inodes, NULL, !flags->d, flags);
+	if (entries)
+		print_group(NULL, entries, NULL, flags);
+	// list_directory on folders
+	if (flags->d)
+		return (0);
+	return (inodes_list_directories(inodes, 1, flags));
+}
+
 /**
  * @brief main function of ft_ls
  * @return
@@ -56,8 +79,6 @@ int main(int argc, char **argv)
 {
 	t_flags	flags;
 	int		i;
-	t_inode	**inodes;
-	char	**entries;
 
 	// no_args = 1;
 	(void)argc;
@@ -66,22 +87,12 @@ int main(int argc, char **argv)
 	if (i > 1)
 		flags.show_foldername = true;
 	if (i)
-	{
-		//make list
-		inodes = ft_calloc(i + 1, sizeof(t_inode **));
-		if (!inodes)
-			return(err(), 1);
-		if (test(inodes, ++argv))
-			return (1);
-		//sort
-		decide_sorting(inodes, &flags);
-		//print only files
-		entries = inode_arr_to_string_arr(inodes, NULL, 1, &flags);
-		if (entries)
-			print_group(NULL, entries, NULL, &flags);
-		// list_directory on folders
-		return (inodes_list_directories(inodes, 1, &flags));
-	}
+		return (input_list(i, ++argv, &flags));
 	else
-		list_directory(".", &flags);
+	{
+		if (!flags.d)
+			list_directory(".", &flags);
+		*argv = ".";
+		return (input_list(1, argv, &flags));
+	}
 }

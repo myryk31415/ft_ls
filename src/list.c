@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 01:06:11 by padam             #+#    #+#             */
-/*   Updated: 2024/08/27 06:12:50 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/27 08:15:29 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	inodes_to_print(char *path, t_inode **inodes, t_flags *flags)
 	//WHY IS IT DOUBLE THE SIZE??
 	blocks_str = ft_ltoa(blocks / 2);
 	print_group(path, entries, blocks_str, flags);
-	if (!flags->R)
+	if (!flags->R || flags-> d)
 		return (0);
 	return (inodes_list_directories(inodes, 0, flags));
 }

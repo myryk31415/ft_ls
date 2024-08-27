@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 08:55:14 by padam             #+#    #+#             */
-/*   Updated: 2024/08/26 04:02:32 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/27 06:25:10 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	short_flag(char *arg, t_flags *flags)
 			flags->t = false;
 			flags->u = false;
 			flags->g = false;
+			flags->l = false;
 		}
 		else if (*arg == 'g')
 		{

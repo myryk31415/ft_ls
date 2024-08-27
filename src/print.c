@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:11:24 by padam             #+#    #+#             */
-/*   Updated: 2024/08/27 05:05:46 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/27 06:33:12 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,14 @@ void	print_group(char *folder_name, char **entries, char *blocks, t_flags *flags
 	}
 	else
 	{
-		while (*entries)
+		if (entries)
 		{
-			ft_putstr(*entries++);
-			ft_putstr("  ");
+			while (*entries)
+			{
+				ft_putstr(*entries++);
+				ft_putstr("  ");
+			}
+			ft_putendl("");
 		}
-		ft_putendl("");
 	}
 }
