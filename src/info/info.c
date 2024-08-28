@@ -14,9 +14,8 @@
 
 /**
  * @brief writes the info from the inode into a string array, also sets flags->column_width
- * @return
 */
-char	**get_string_long(t_inode *inode, t_flags *flags)
+char	**get_info_long(t_inode *inode, t_flags *flags)
 {
 	char	**columns;
 	int		i;
@@ -45,6 +44,11 @@ char	**get_string_long(t_inode *inode, t_flags *flags)
 	return(columns);
 }
 
+/**
+ * @brief takes the strings for each entry and joins them with padding according to flags
+ * @warning entries will be a `char **`
+ * @return error status
+ */
 int	columns_join(char ***entries, t_flags *flags)
 {
 	int	i;
@@ -83,7 +87,13 @@ int	columns_join(char ***entries, t_flags *flags)
 	return (0);
 }
 
-char	**inode_arr_to_string_arr(t_inode **inodes, long *blocks, int no_directories, t_flags *flags)
+/**
+ * @brief takes the inodes and transforms the info into strings
+ * @param blocks will be set to the sum of all blocks used, can be `NULL`
+ * @param no_directories if set all directories will be skipped
+ * @return string array with the joined info for each inode
+ */
+char	**gather_info_from_inodes(t_inode **inodes, long *blocks, int no_directories, t_flags *flags)
 {
 	char	**entries;
 	char	***gathered_entries;
@@ -123,7 +133,7 @@ char	**inode_arr_to_string_arr(t_inode **inodes, long *blocks, int no_directorie
 			if (blocks)
 				*blocks += inodes[j]->st.st_blocks;
 			if (flags->l)
-				gathered_entries[i] = get_string_long(inodes[j], flags);
+				gathered_entries[i] = get_info_long(inodes[j], flags);
 			else
 				entries[i] = ft_strdup(inodes[j]->name);
 			i++;
@@ -144,7 +154,7 @@ char	**inode_arr_to_string_arr(t_inode **inodes, long *blocks, int no_directorie
  * @brief fills a inode struct with the info for the path
  * @return the populated stucture, `NULL` on failure
 */
-t_inode	*path_to_inode(char *path, char *name)
+t_inode	*populate_inode(char *path, char *name)
 {
 	t_inode 	*inode;
 

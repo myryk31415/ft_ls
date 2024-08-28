@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 08:00:10 by padam             #+#    #+#             */
-/*   Updated: 2024/08/25 08:51:28 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/28 06:02:59 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	check_right(bool permission, char value)
 
 /**
  * @brief gathers access rights
- * @return string containing `d`. `r`, `w`, `x`, `-`
+ * @return string containing `d`, 'l', `r`, `w`, `x`, `-`
  */
 char	*get_rights(t_inode *inode)
 {
@@ -36,7 +36,11 @@ char	*get_rights(t_inode *inode)
 	modeval = ft_calloc(10, 1);
 	if (!modeval)
 		return (NULL);
-	modeval[0] = check_right(S_ISDIR(perm), 'd');
+	modeval[0] = '-';
+	if (S_ISDIR(perm))
+		modeval[0] = 'd';
+	else if (S_ISLNK(perm));
+		modeval[0] = 'l';
 	modeval[1] = check_right(perm & S_IRUSR, 'r');
 	modeval[2] = check_right(perm & S_IWUSR, 'w');
 	modeval[3] = check_right(perm & S_IXUSR, 'x');

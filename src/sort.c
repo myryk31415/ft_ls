@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 07:52:48 by padam             #+#    #+#             */
-/*   Updated: 2024/08/26 04:03:43 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/28 06:16:34 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
  */
 int	ft_strcmp_ls(const char *s1, const char *s2)
 {
+	// TODO more rules for sorting e.g. depending on case, `.folder` vs `folder`
 	const unsigned char	*str1;
 	const unsigned char	*str2;
 
@@ -62,15 +63,6 @@ bool	compare_last_accessed(t_inode *a, t_inode *b)
 */
 bool	compare_name(t_inode *a, t_inode *b)
 {
-	// int	j;
-	// int k;
-
-	// j = 0;
-	// while (a->name[j] == '.')
-	// 	j++;
-	// k = 0;
-	// while (b->name[k] == '.')
-	// 	k++;
 	return (ft_strcmp_ls(a->name, b->name) > 0);
 }
 
@@ -78,7 +70,7 @@ bool	compare_name(t_inode *a, t_inode *b)
  * @brief sorts an arrary of inodes
  * @param compare the function used to decide sorting
 */
-void	sort(t_inode **inodes, bool (*compare)(t_inode*, t_inode*), int reverse)
+void	sort_algo(t_inode **inodes, bool (*compare)(t_inode*, t_inode*), int reverse)
 {
 	t_inode **fkldajsk;
 	t_inode *tmp;
@@ -105,7 +97,7 @@ void	sort(t_inode **inodes, bool (*compare)(t_inode*, t_inode*), int reverse)
  * @brief sorts the inodes array according to the flags
  * @return
 */
-void	decide_sorting(t_inode **inodes, t_flags *flags)
+void	sort(t_inode **inodes, t_flags *flags)
 {
 	bool	reverse;
 
@@ -113,22 +105,22 @@ void	decide_sorting(t_inode **inodes, t_flags *flags)
 	if (flags->l)
 	{
 		if (!flags->t)
-			sort(inodes, &compare_name, reverse);
+			sort_algo(inodes, &compare_name, reverse);
 		else if (flags->u)
-			sort(inodes, &compare_last_accessed, reverse);
+			sort_algo(inodes, &compare_last_accessed, reverse);
 		else
-			sort(inodes, &compare_last_modified, reverse);
+			sort_algo(inodes, &compare_last_modified, reverse);
 	}
 	else if (flags->t)
 	{
 		if (flags->u)
-			sort(inodes, &compare_last_accessed, reverse);
+			sort_algo(inodes, &compare_last_accessed, reverse);
 		else
-			sort(inodes, &compare_last_modified, reverse);
+			sort_algo(inodes, &compare_last_modified, reverse);
 	}
 	else if (flags->u && !flags->f)
-		sort(inodes, &compare_last_accessed, reverse);
+		sort_algo(inodes, &compare_last_accessed, reverse);
 	else if (!flags->f)
-		sort(inodes, &compare_name, reverse);
+		sort_algo(inodes, &compare_name, reverse);
 
 }

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:11:24 by padam             #+#    #+#             */
-/*   Updated: 2024/08/27 06:33:12 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/28 05:46:25 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 /**
  * @brief prints one group of files e.g. lists one folder
+ * @param folder_name can be `NULL`
  * @param entries string array containing the gathered info got each inode
+ * @param blocks the amount of blocks used by the group; can be `NULL`
  */
 void	print_group(char *folder_name, char **entries, char *blocks, t_flags *flags)
 {
@@ -29,8 +31,11 @@ void	print_group(char *folder_name, char **entries, char *blocks, t_flags *flags
 	}
 	if (flags->l)
 	{
-		ft_putstr("total ");
-		ft_putendl(blocks);
+		if (blocks)
+		{
+			ft_putstr("total ");
+			ft_putendl(blocks);
+		}
 		while (*entries)
 			ft_putendl(*entries++);
 	}

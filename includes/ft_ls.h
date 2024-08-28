@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:37:52 by padam             #+#    #+#             */
-/*   Updated: 2024/08/27 06:08:14 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/28 06:12:18 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ typedef struct s_dir_tmp
 int	parse_arguments(char **argv, t_flags *flags);
 
 // info
-t_inode	*path_to_inode(char *path, char *name);
+t_inode	*populate_inode(char *path, char *name);
 char	**inode_to_string(t_inode *inode, t_flags *flags);
-char	**inode_arr_to_string_arr(t_inode **inodes, long *blocks, int no_directories, t_flags *flags);
+char	**gather_info_from_inodes(t_inode **inodes, long *blocks, int no_directories, t_flags *flags);
 
 // long
 char	*get_rights(t_inode *inode);
@@ -70,14 +70,14 @@ char	*get_date(t_inode *inode, t_flags *flags);
 
 // list
 int		inodes_list_directories(t_inode **inodes, int no_checks, t_flags *flags);
-int		inodes_to_print(char *path, t_inode **inodes, t_flags *flags);
+int		print_inodes(char *path, t_inode **inodes, t_flags *flags);
 int		list_directory(char *path, t_flags *flags);
 
 // print
 void	print_group(char *folder_name, char **entries, char *blocks, t_flags *flags);
 
 // sort
-void	decide_sorting(t_inode **inodes, t_flags *flags);
+void	sort(t_inode **inodes, t_flags *flags);
 
 // utils
 void	err(void);

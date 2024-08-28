@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 01:06:11 by padam             #+#    #+#             */
-/*   Updated: 2024/08/27 08:15:29 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/28 06:13:45 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,11 @@ t_dir_tmp	*store_name(char *name, t_dir_tmp *lst)
 	return (new);
 }
 
+/**
+ * @brief calls `list_directory` on each directory inode
+ * @param no_checks skips `.` and `..` name check
+ * @return error status
+ */
 int	inodes_list_directories(t_inode **inodes, int no_checks, t_flags *flags)
 {
 	int	error;
@@ -80,20 +85,22 @@ int	inodes_list_directories(t_inode **inodes, int no_checks, t_flags *flags)
 
 /**
  * @brief gathers info fo the inodes and prints everything
+ * @param path the directory containing the inodes
  * @return `0` on success, `1` on error
  */
-int	inodes_to_print(char *path, t_inode **inodes, t_flags *flags)
+int	print_inodes(char *path, t_inode **inodes, t_flags *flags)
 {
 	char	**entries;
 	long	blocks;
 	char	*blocks_str;
 
 	//sort
-	decide_sorting(inodes, flags);
-	entries = inode_arr_to_string_arr(inodes, &blocks, 0, flags);
+	sort(inodes, flags);
+	entries = gather_info_from_inodes(inodes, &blocks, 0, flags);
 	//WHY IS IT DOUBLE THE SIZE??
 	blocks_str = ft_ltoa(blocks / 2);
-	print_group(path, entries, blocks_str, flags);
+	if (entries)
+		print_group(path, entries, blocks_str, flags);
 	if (!flags->R || flags-> d)
 		return (0);
 	return (inodes_list_directories(inodes, 0, flags));
@@ -104,7 +111,7 @@ int	inodes_to_print(char *path, t_inode **inodes, t_flags *flags)
  * @attention returned list is in reverse order
  * @return linked list with all the names
  */
-t_dir_tmp	*path_to_list(char *path, int *count, t_flags *flags)
+t_dir_tmp	*read_dir(char *path, int *count, t_flags *flags)
 {
 	DIR 			*dir;
 	struct dirent	*dirent;
@@ -142,18 +149,18 @@ int	list_directory(char *path, t_flags *flags)
 	int				count;
 	t_inode			**inodes;
 
-	name_lst = path_to_list(path, &count, flags);
+	name_lst = read_dir(path, &count, flags);
 	inodes = ft_calloc(count + 1, sizeof(t_inode *));
 	if (!inodes)
 		return(err(), 1);
 	while (count--)
 	{
-		inodes[count] = path_to_inode(path, name_lst->name);
+		inodes[count] = populate_inode(path, name_lst->name);
 		// if (!inodes[i])
 		// 	return (inodes_free(inodes + i), 1);
 		tmp = name_lst;
 		name_lst = name_lst->next;
 		free(tmp);
 	}
-	return (inodes_to_print(path, inodes, flags));
+	return (print_inodes(path, inodes, flags));
 }

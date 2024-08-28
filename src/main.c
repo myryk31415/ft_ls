@@ -6,14 +6,14 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:36:36 by padam             #+#    #+#             */
-/*   Updated: 2024/08/27 08:31:10 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/28 06:20:10 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 /**
- * @brief sets all flags to false
+ * @brief sets all flags except `first entry` to false
 */
 void init_flags(t_flags *flags)
 {
@@ -27,18 +27,17 @@ void init_flags(t_flags *flags)
 	flags->first_entry = true;
 }
 
-// void	beginningsort(t_inode **inodes, t_flags *flags)
-// {
-
-// }
-
-int	test(t_inode **inodes, char **names)
+/**
+ * @brief populates the inode array
+ * @return error status
+ */
+int	get_inodes(t_inode **inodes, char **names)
 {
 	while (*names)
 	{
 		if (names[0][0] != '-' || !names[0][1])
 		{
-			*inodes = path_to_inode(NULL, *names);
+			*inodes = populate_inode(NULL, *names);
 			if (!*inodes)
 				return (1);
 			inodes++;
@@ -48,7 +47,11 @@ int	test(t_inode **inodes, char **names)
 	return (0);
 }
 
-int	input_list(int count, char **paths, t_flags *flags)
+/**
+ * @brief similar to `inodes_to_print` but seperates folders and files
+ * @return error status
+ */
+int	list_argv(int count, char **paths, t_flags *flags)
 {
 	t_inode	**inodes;
 	char	**entries;
@@ -57,12 +60,12 @@ int	input_list(int count, char **paths, t_flags *flags)
 	inodes = ft_calloc(count + 1, sizeof(t_inode **));
 	if (!inodes)
 		return(err(), 1);
-	if (test(inodes, paths))
+	if (get_inodes(inodes, paths))
 		return (1);
 	//sort
-	decide_sorting(inodes, flags);
+	sort(inodes, flags);
 	//print only files
-	entries = inode_arr_to_string_arr(inodes, NULL, !flags->d, flags);
+	entries = gather_info_from_inodes(inodes, NULL, !flags->d, flags);
 	if (entries)
 		print_group(NULL, entries, NULL, flags);
 	// list_directory on folders
@@ -73,26 +76,25 @@ int	input_list(int count, char **paths, t_flags *flags)
 
 /**
  * @brief main function of ft_ls
- * @return
+ * @return error status
 */
 int main(int argc, char **argv)
 {
 	t_flags	flags;
 	int		i;
 
-	// no_args = 1;
 	(void)argc;
 	init_flags(&flags);
 	i = parse_arguments(argv + 1, &flags);
 	if (i > 1)
 		flags.show_foldername = true;
 	if (i)
-		return (input_list(i, ++argv, &flags));
+		return (list_argv(i, ++argv, &flags));
 	else
 	{
 		if (!flags.d)
 			list_directory(".", &flags);
 		*argv = ".";
-		return (input_list(1, argv, &flags));
+		return (list_argv(1, argv, &flags));
 	}
 }
