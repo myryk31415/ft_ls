@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:37:52 by padam             #+#    #+#             */
-/*   Updated: 2024/08/28 06:12:18 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/30 03:37:16 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,13 @@ typedef struct s_dir_tmp
 	struct s_dir_tmp	*next;
 } t_dir_tmp;
 
+// parser
 int	parse_arguments(char **argv, t_flags *flags);
+
+// free
+void	inodes_free(t_inode **inodes, int start);
+void	list_free(t_dir_tmp *list);
+void	string_arr_free(char **arr);
 
 // info
 t_inode	*populate_inode(char *path, char *name);

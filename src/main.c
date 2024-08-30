@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:36:36 by padam             #+#    #+#             */
-/*   Updated: 2024/08/28 06:20:10 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/31 00:41:07 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	get_inodes(t_inode **inodes, char **names)
 		{
 			*inodes = populate_inode(NULL, *names);
 			if (!*inodes)
-				return (1);
+				return (2);
 			inodes++;
 		}
 		names ++;
@@ -56,18 +56,17 @@ int	list_argv(int count, char **paths, t_flags *flags)
 	t_inode	**inodes;
 	char	**entries;
 
-	//make list
 	inodes = ft_calloc(count + 1, sizeof(t_inode **));
 	if (!inodes)
 		return(err(), 1);
 	if (get_inodes(inodes, paths))
-		return (1);
-	//sort
+		return (free(inodes), 2);
 	sort(inodes, flags);
 	//print only files
 	entries = gather_info_from_inodes(inodes, NULL, !flags->d, flags);
 	if (entries)
 		print_group(NULL, entries, NULL, flags);
+	string_arr_free(entries);
 	// list_directory on folders
 	if (flags->d)
 		return (0);
@@ -93,7 +92,7 @@ int main(int argc, char **argv)
 	else
 	{
 		if (!flags.d)
-			list_directory(".", &flags);
+			return (list_directory(".", &flags));
 		*argv = ".";
 		return (list_argv(1, argv, &flags));
 	}

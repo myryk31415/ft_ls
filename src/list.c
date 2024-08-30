@@ -6,40 +6,11 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 01:06:11 by padam             #+#    #+#             */
-/*   Updated: 2024/08/28 06:13:45 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/30 03:39:17 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-/**
- * @brief frees an array of inodes
- */
-void	inodes_free(t_inode **inodes)
-{
-	while (*inodes)
-	{
-		free(*inodes);
-		inodes++;
-	}
-	free(inodes);
-}
-
-/**
- * @brief frees the linked list
- */
-void	list_free(t_dir_tmp *list)
-{
-	t_dir_tmp	*tmp;
-
-	while (list)
-	{
-		tmp = list;
-		free(list->name);
-		list = list->next;
-		free(tmp);
-	}
-}
 
 /**
  * @brief allocates new `t_dir_tmp` struct, adds the name and prepends it to the linked list
@@ -53,9 +24,15 @@ t_dir_tmp	*store_name(char *name, t_dir_tmp *lst)
 	if (!new)
 	{
 		list_free(lst);
-		return(err(), NULL);
+		return (err(), NULL);
 	}
 	new->name = ft_strdup(name);
+	if (!new->name)
+	{
+		list_free(lst);
+		free(new);
+		return (NULL);
+	}
 	new->next = lst;
 	return (new);
 }
@@ -75,8 +52,7 @@ int	inodes_list_directories(t_inode **inodes, int no_checks, t_flags *flags)
 		if (!(*inodes)->error && S_ISDIR((*inodes)->st.st_mode))
 			if (no_checks || (ft_strcmp((*inodes)->name, ".")
 				&& ft_strcmp((*inodes)->name, "..")))
-				// list_directory((*inodes)->path, flags);
-				if (list_directory((*inodes)->path, flags) == -1)
+				if (list_directory((*inodes)->path, flags))
 					error = 1;
 		inodes++;
 	}
@@ -97,10 +73,15 @@ int	print_inodes(char *path, t_inode **inodes, t_flags *flags)
 	//sort
 	sort(inodes, flags);
 	entries = gather_info_from_inodes(inodes, &blocks, 0, flags);
+	if (!entries)
+		return (2);
 	//WHY IS IT DOUBLE THE SIZE??
 	blocks_str = ft_ltoa(blocks / 2);
+	if (!blocks_str)
+		return (string_arr_free(entries), 2);
 	if (entries)
 		print_group(path, entries, blocks_str, flags);
+	string_arr_free(entries);
 	if (!flags->R || flags-> d)
 		return (0);
 	return (inodes_list_directories(inodes, 0, flags));
@@ -109,7 +90,7 @@ int	print_inodes(char *path, t_inode **inodes, t_flags *flags)
 /**
  * @brief reads all entries of the directory stream of path, also sets count accordingly
  * @attention returned list is in reverse order
- * @return linked list with all the names
+ * @return linked list with all the names, `NULL` on error
  */
 t_dir_tmp	*read_dir(char *path, int *count, t_flags *flags)
 {
@@ -150,14 +131,19 @@ int	list_directory(char *path, t_flags *flags)
 	t_inode			**inodes;
 
 	name_lst = read_dir(path, &count, flags);
+	if (!name_lst)
+		return (2);
 	inodes = ft_calloc(count + 1, sizeof(t_inode *));
 	if (!inodes)
-		return(err(), 1);
+	{
+		list_free(name_lst);
+		return(err(), 2);
+	}
 	while (count--)
 	{
 		inodes[count] = populate_inode(path, name_lst->name);
-		// if (!inodes[i])
-		// 	return (inodes_free(inodes + i), 1);
+		if (!inodes[count])
+			return (inodes_free(inodes, count), list_free(name_lst), 2);
 		tmp = name_lst;
 		name_lst = name_lst->next;
 		free(tmp);

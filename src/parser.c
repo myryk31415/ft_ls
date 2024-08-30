@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 08:55:14 by padam             #+#    #+#             */
-/*   Updated: 2024/08/28 06:17:54 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/30 01:03:12 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	short_flag(char *arg, t_flags *flags)
  * @attention exits if incorrect flags
  * @return amount of non-flag arguments
 */
-int	set_flags(char **argv, t_flags *flags)
+int	parse_arguments(char **argv, t_flags *flags)
 {
 	int		i;
 	bool	error;
@@ -119,17 +119,4 @@ int	set_flags(char **argv, t_flags *flags)
 	if (error)
 		exit(2);
 	return i;
-}
-
-/**
- * @brief parses arguments lol
- * @attention exits if incorrect flags
- * @return amount of non-flag arguments
-*/
-int	parse_arguments(char **argv, t_flags *flags)
-{
-	int i;
-
-	i = set_flags(argv, flags);
-	return (i);
 }

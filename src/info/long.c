@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 08:00:10 by padam             #+#    #+#             */
-/*   Updated: 2024/08/28 06:02:59 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/30 02:07:28 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ char	*get_rights(t_inode *inode)
 	perm = inode->st.st_mode;
 	modeval = ft_calloc(10, 1);
 	if (!modeval)
-		return (NULL);
+		return (err(), NULL);
 	modeval[0] = '-';
 	if (S_ISDIR(perm))
 		modeval[0] = 'd';
-	else if (S_ISLNK(perm));
+	else if (S_ISLNK(perm))
 		modeval[0] = 'l';
 	modeval[1] = check_right(perm & S_IRUSR, 'r');
 	modeval[2] = check_right(perm & S_IWUSR, 'w');
@@ -83,20 +83,16 @@ char	*get_group(t_inode *inode)
 }
 
 /**
- * @brief gets time according to flags, composes it into right order
- * @return the important parts of the date in correct order
+ * @brief transforms the time into the correct format for `ls`7
+ * @return the date formatted for `ls`
  */
-char	*get_date(t_inode *inode, t_flags *flags)
+char	*get_date_from_time(time_t *selected_time)
 {
 	time_t	current_time;
-	time_t	*selected_time;
-	char	*tmp_time;
 	char	*composed_time;
+	char	*tmp_time;
 	bool	recent;
 
-	selected_time = &inode->st.st_mtime;
-	if (flags->u)
-		selected_time = &inode->st.st_atime;
 	current_time = time(NULL);
 	if (current_time == -1)
 		return (err(), NULL);
@@ -107,6 +103,8 @@ char	*get_date(t_inode *inode, t_flags *flags)
 	if (!tmp_time)
 		return(err(), NULL);
 	composed_time = ft_calloc(13, 1);
+	if (!composed_time)
+		return (err(), NULL);
 	ft_strlcpy(composed_time, tmp_time + 4, 7);
 	ft_strlcat(composed_time, " ", 8);
 	if (recent)
@@ -114,4 +112,18 @@ char	*get_date(t_inode *inode, t_flags *flags)
 	else
 		ft_strlcat(composed_time, tmp_time + 19, 13);
 	return (composed_time);
+}
+
+/**
+ * @brief selects time according to flags and transforms it
+ * @return the date formatted for `ls`
+ */
+char	*get_date(t_inode *inode, t_flags *flags)
+{
+	time_t	*selected_time;
+
+	selected_time = &inode->st.st_mtime;
+	if (flags->u)
+		selected_time = &inode->st.st_atime;
+	return (get_date_from_time(selected_time));
 }

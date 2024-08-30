@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/08/24 08:04:12 by padam            ###   ########.fr        #
+#    Updated: 2024/08/30 03:46:31 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ OBJ_PATH = obj
 
 OBJ_DIRS = info
 
-SRCS_MAIN =	main.c parser.c print.c list.c utils.c sort.c
+SRCS_MAIN =	main.c parser.c print.c list.c utils.c sort.c free.c
 
 SRCS_INFO = info.c long.c
 

@@ -152,7 +152,7 @@ char	**gather_info_from_inodes(t_inode **inodes, long *blocks, int no_directorie
 
 /**
  * @brief fills a inode struct with the info for the path
- * @return the populated stucture, `NULL` on failure
+ * @return the populated stucture, `NULL` on error
 */
 t_inode	*populate_inode(char *path, char *name)
 {
@@ -167,16 +167,17 @@ t_inode	*populate_inode(char *path, char *name)
 	if (!inode->path)
 	{
 		err();
-		// free(inode->name);
+		free(inode->name);
 		return (NULL);
 	}
 	if (lstat(inode->path, &inode->st) == -1)
 	{
-		file_not_found(inode->path);
 		inode->error = true;
-		// free(inode->name);
-		// free(inode->path);
-		// return (NULL);
+		file_not_found(inode->path);
+		free(inode->path);
+		inode->path = NULL;
+		free(inode->name);
+		inode->name = NULL;
 	}
 	return (inode);
 }
