@@ -45,46 +45,69 @@ char	**get_info_long(t_inode *inode, t_flags *flags)
 }
 
 /**
- * @brief takes the strings for each entry and joins them with padding according to flags
- * @warning entries will be a `char **`
- * @return error status
+ * @brief takes the strings of the entry and joins them with padding according to flags
+ * @return joined string, `NULL` on error
  */
-int	columns_join(char ***entries, t_flags *flags)
+char	*entry_join(char **entry, int total_length, t_flags *flags)
+{
+	char	*tmp;
+	int		diff;
+	int		i;
+
+	i = 0;
+	tmp = ft_calloc(total_length, 1);
+	if (!tmp)
+		return (NULL);
+	while (entry[i])
+	{
+		diff = ft_abs_int(flags->column_width[i]) - ft_strlen(entry[i]);
+		if (flags->column_width[i] < 0 && diff > 0)
+			while (diff--)
+				ft_strlcat(tmp, " ", total_length);
+		ft_strlcat(tmp, entry[i], total_length);
+		if (flags->column_width[i] > 0 && diff > 0)
+			while (diff--)
+				ft_strlcat(tmp, " ", total_length);
+		ft_strlcat(tmp, " ", total_length);
+		free(entry[i]);
+		i++;
+	}
+	free(entry);
+	return (tmp);
+}
+
+/**
+ * @brief takes the strings for each entry and joins them with padding according to flags
+ * @warning entries is reused for tmp, don't use it afterwards
+ * @return the joined strings, `NULL` on error
+ */
+char	**columns_join(char ***entries, t_flags *flags)
 {
 	int	i;
 	int		total_length;
-	char	*tmp;
-	int		diff;
+	char	**tmp;
 
+	tmp = (char **)entries;
 	i = 0;
 	total_length = 0;
 	while (i < 10)
 		total_length += flags->column_width[i++] + 1;
-	while (*entries)
+	i = 0;
+	while (entries[i])
 	{
-		i = 0;
-		tmp = ft_calloc(total_length, 1);
-		if (!tmp)
-			return (1);
-		while ((*entries)[i])
+		tmp[i] = entry_join(entries[i], total_length, flags);
+		if (!tmp[i])
 		{
-			diff = ft_abs_int(flags->column_width[i]) - ft_strlen((*entries)[i]);
-			if (flags->column_width[i] < 0 && diff > 0)
-				while (diff--)
-					ft_strlcat(tmp, " ", total_length);
-			ft_strlcat(tmp, (*entries)[i], total_length);
-			free((*entries)[i]);
-			if (flags->column_width[i] > 0 && diff > 0)
-				while (diff--)
-					ft_strlcat(tmp, " ", total_length);
-			ft_strlcat(tmp, " ", total_length);
-			i++;
+			while (entries[i])
+				string_arr_free(entries[i++]);
+			i = 0;
+			while (tmp[i])
+				free(tmp[i++]);
+			return (NULL);
 		}
-		free(*entries);
-		*entries = (char **)tmp;
-		entries++;
+		i++;
 	}
-	return (0);
+	return (tmp);
 }
 
 /**
@@ -142,8 +165,7 @@ char	**gather_info_from_inodes(t_inode **inodes, long *blocks, int no_directorie
 	}
 	if (flags->l)
 	{
-		entries = (char **)gathered_entries;
-		columns_join(gathered_entries, flags);
+		entries = columns_join(gathered_entries, flags);
 		// while (entries[i])
 			// entries[i] = ft_arrjoin(gathered_entries[i++], " ");
 	}

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 08:00:10 by padam             #+#    #+#             */
-/*   Updated: 2024/08/30 02:07:28 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/31 02:30:34 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*get_rights(t_inode *inode)
 	char			*modeval;
 
 	perm = inode->st.st_mode;
-	modeval = ft_calloc(10, 1);
+	modeval = ft_calloc(11, 1);
 	if (!modeval)
 		return (err(), NULL);
 	modeval[0] = '-';
