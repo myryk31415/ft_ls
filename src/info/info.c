@@ -12,6 +12,18 @@
 
 #include "ft_ls.h"
 
+void	reset_width(t_flags *flags)
+{
+	int	i;
+
+	i = 0;
+	while (i < 10)
+	{
+		flags->column_width[i] = 0;
+		i++;
+	}
+}
+
 /**
  * @brief writes the info from the inode into a string array, also sets flags->column_width
 */
@@ -166,6 +178,7 @@ char	**gather_info_from_inodes(t_inode **inodes, long *blocks, int no_directorie
 	if (flags->l)
 	{
 		entries = columns_join(gathered_entries, flags);
+		reset_width(flags);
 		// while (entries[i])
 			// entries[i] = ft_arrjoin(gathered_entries[i++], " ");
 	}

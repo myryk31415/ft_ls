@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:36:36 by padam             #+#    #+#             */
-/*   Updated: 2024/08/31 00:41:07 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/31 06:48:10 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	get_inodes(t_inode **inodes, char **names)
 	{
 		if (names[0][0] != '-' || !names[0][1])
 		{
-			*inodes = populate_inode(NULL, *names);
+			*inodes = populate_inode(NULL, ft_strdup(*names));
 			if (!*inodes)
 				return (2);
 			inodes++;
@@ -69,7 +69,7 @@ int	list_argv(int count, char **paths, t_flags *flags)
 	string_arr_free(entries);
 	// list_directory on folders
 	if (flags->d)
-		return (0);
+		return (inodes_free(inodes, 0), 0);
 	return (inodes_list_directories(inodes, 1, flags));
 }
 

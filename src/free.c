@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 03:33:53 by padam             #+#    #+#             */
-/*   Updated: 2024/08/31 00:44:41 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/31 06:43:18 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	inodes_free(t_inode **inodes, int start)
 		return ;
 	while (inodes[start])
 	{
+		free(inodes[start]->name);
+		free(inodes[start]->path);
 		free(inodes[start]);
 		start++;
 	}

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 08:55:14 by padam             #+#    #+#             */
-/*   Updated: 2024/08/30 01:03:12 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/31 06:28:24 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	short_flag_error(char flag)
 {
 	ft_putstr_fd("ls: ", 2);
 	ft_putstr_fd("invalid option -- '", 2);
-	ft_putstr_fd(&flag, 2);
+	ft_putchar_fd(flag, 2);
 	ft_putendl_fd("'", 2);
 }
 

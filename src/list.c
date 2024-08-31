@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 01:06:11 by padam             #+#    #+#             */
-/*   Updated: 2024/08/30 03:39:17 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/31 07:53:14 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,23 @@ t_dir_tmp	*store_name(char *name, t_dir_tmp *lst)
 int	inodes_list_directories(t_inode **inodes, int no_checks, t_flags *flags)
 {
 	int	error;
+	int	i;
 
 	error = 0;
-	while(*inodes)
+	i = 0;
+	while(inodes[i])
 	{
-		if (!(*inodes)->error && S_ISDIR((*inodes)->st.st_mode))
-			if (no_checks || (ft_strcmp((*inodes)->name, ".")
-				&& ft_strcmp((*inodes)->name, "..")))
-				if (list_directory((*inodes)->path, flags))
+		if (!inodes[i]->error && S_ISDIR(inodes[i]->st.st_mode))
+			if (no_checks || (ft_strcmp(inodes[i]->name, ".")
+				&& ft_strcmp(inodes[i]->name, "..")))
+				if (list_directory(inodes[i]->path, flags))
 					error = 1;
-		inodes++;
+		free(inodes[i]->name);
+		free(inodes[i]->path);
+		free(inodes[i]);
+		i++;
 	}
+	free(inodes);
 	return(error);
 }
 
@@ -74,16 +80,17 @@ int	print_inodes(char *path, t_inode **inodes, t_flags *flags)
 	sort(inodes, flags);
 	entries = gather_info_from_inodes(inodes, &blocks, 0, flags);
 	if (!entries)
-		return (2);
+		return (inodes_free(inodes, 0), 2);
 	//WHY IS IT DOUBLE THE SIZE??
 	blocks_str = ft_ltoa(blocks / 2);
 	if (!blocks_str)
-		return (string_arr_free(entries), 2);
+		return (string_arr_free(entries), inodes_free(inodes, 0), 2);
 	if (entries)
 		print_group(path, entries, blocks_str, flags);
+	free(blocks_str);
 	string_arr_free(entries);
 	if (!flags->R || flags-> d)
-		return (0);
+		return (inodes_free(inodes, 0), 0);
 	return (inodes_list_directories(inodes, 0, flags));
 }
 

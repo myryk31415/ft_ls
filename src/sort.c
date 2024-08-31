@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 07:52:48 by padam             #+#    #+#             */
-/*   Updated: 2024/08/28 06:16:34 by padam            ###   ########.fr       */
+/*   Updated: 2024/08/31 07:03:12 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ int	ft_strcmp_ls(const char *s1, const char *s2)
 
 	str1 = (const unsigned char *)s1;
 	str2 = (const unsigned char *)s2;
+	if (!str1)
+		return (-1);
+	if (!str2)
+		return (1);
 	while (*str1 == '.')
 		str1++;
 	while (*str2 == '.')
