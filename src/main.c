@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:36:36 by padam             #+#    #+#             */
-/*   Updated: 2024/08/31 06:48:10 by padam            ###   ########.fr       */
+/*   Updated: 2024/09/03 01:22:40 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /**
  * @brief sets all flags except `first entry` to false
 */
-void init_flags(t_flags *flags)
+void	init_flags(t_flags *flags)
 {
 	int		i;
 	bool	*cast;
@@ -58,7 +58,7 @@ int	list_argv(int count, char **paths, t_flags *flags)
 
 	inodes = ft_calloc(count + 1, sizeof(t_inode **));
 	if (!inodes)
-		return(err(), 1);
+		return (err(), 2);
 	if (get_inodes(inodes, paths))
 		return (free(inodes), 2);
 	sort(inodes, flags);
@@ -77,7 +77,7 @@ int	list_argv(int count, char **paths, t_flags *flags)
  * @brief main function of ft_ls
  * @return error status
 */
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_flags	flags;
 	int		i;

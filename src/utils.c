@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 02:57:48 by padam             #+#    #+#             */
-/*   Updated: 2024/08/28 05:52:57 by padam            ###   ########.fr       */
+/*   Updated: 2024/09/03 00:28:43 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,19 @@ void	err(void)
 /**
  * @brief outputs according error message
  */
-void	file_not_found(char *file)
+void	file_error(char *file)
 {
 	ft_putstr_fd("ls: cannot access '", 2);
 	ft_putstr_fd(file, 2);
+	perror("'");
+}
+
+/**
+ * @brief outputs according error message
+ */
+void	dir_error(char *dir)
+{
+	ft_putstr_fd("ls: cannot open directory '", 2);
+	ft_putstr_fd(dir, 2);
 	perror("'");
 }

@@ -6,19 +6,20 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 01:06:11 by padam             #+#    #+#             */
-/*   Updated: 2024/08/31 07:53:14 by padam            ###   ########.fr       */
+/*   Updated: 2024/09/03 01:28:56 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 /**
- * @brief allocates new `t_dir_tmp` struct, adds the name and prepends it to the linked list
+ * @brief allocates new `t_dir_tmp` struct, adds the name
+ * and prepends it to the linked list
  * @return link to the new struct
  */
 t_dir_tmp	*store_name(char *name, t_dir_tmp *lst)
 {
-	t_dir_tmp *new;
+	t_dir_tmp	*new;
 
 	new = ft_calloc(1, sizeof(t_dir_tmp));
 	if (!new)
@@ -49,11 +50,11 @@ int	inodes_list_directories(t_inode **inodes, int no_checks, t_flags *flags)
 
 	error = 0;
 	i = 0;
-	while(inodes[i])
+	while (inodes[i])
 	{
 		if (!inodes[i]->error && S_ISDIR(inodes[i]->st.st_mode))
 			if (no_checks || (ft_strcmp(inodes[i]->name, ".")
-				&& ft_strcmp(inodes[i]->name, "..")))
+					&& ft_strcmp(inodes[i]->name, "..")))
 				if (list_directory(inodes[i]->path, flags))
 					error = 1;
 		free(inodes[i]->name);
@@ -62,7 +63,7 @@ int	inodes_list_directories(t_inode **inodes, int no_checks, t_flags *flags)
 		i++;
 	}
 	free(inodes);
-	return(error);
+	return (error);
 }
 
 /**
@@ -89,19 +90,20 @@ int	print_inodes(char *path, t_inode **inodes, t_flags *flags)
 		print_group(path, entries, blocks_str, flags);
 	free(blocks_str);
 	string_arr_free(entries);
-	if (!flags->R || flags-> d)
+	if (!flags->r_upper || flags-> d)
 		return (inodes_free(inodes, 0), 0);
 	return (inodes_list_directories(inodes, 0, flags));
 }
 
 /**
- * @brief reads all entries of the directory stream of path, also sets count accordingly
+ * @brief reads all entries of the directory stream of path,
+ * also sets count accordingly
  * @attention returned list is in reverse order
  * @return linked list with all the names, `NULL` on error
  */
 t_dir_tmp	*read_dir(char *path, int *count, t_flags *flags)
 {
-	DIR 			*dir;
+	DIR				*dir;
 	struct dirent	*dirent;
 	t_dir_tmp		*name_lst;
 
@@ -109,7 +111,7 @@ t_dir_tmp	*read_dir(char *path, int *count, t_flags *flags)
 	name_lst = NULL;
 	dir = opendir(path);
 	if (!dir)
-		return (file_not_found(path), NULL);
+		return (dir_error(path), NULL);
 	dirent = readdir(dir);
 	while (dirent)
 	{
@@ -144,7 +146,7 @@ int	list_directory(char *path, t_flags *flags)
 	if (!inodes)
 	{
 		list_free(name_lst);
-		return(err(), 2);
+		return (err(), 2);
 	}
 	while (count--)
 	{

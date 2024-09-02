@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 08:55:14 by padam             #+#    #+#             */
-/*   Updated: 2024/08/31 06:28:24 by padam            ###   ########.fr       */
+/*   Updated: 2024/09/03 01:23:33 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	short_flag(char *arg, t_flags *flags)
 			flags->r = true;
 		else if (*arg == 'R')
 		{
-			flags->R = true;
+			flags->r_upper = true;
 			flags->show_foldername = true;
 		}
 		else if (*arg == 't')
@@ -118,5 +118,5 @@ int	parse_arguments(char **argv, t_flags *flags)
 	}
 	if (error)
 		exit(2);
-	return i;
+	return (i);
 }

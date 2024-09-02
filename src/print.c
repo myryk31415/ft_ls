@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:11:24 by padam             #+#    #+#             */
-/*   Updated: 2024/08/30 00:58:31 by padam            ###   ########.fr       */
+/*   Updated: 2024/09/03 01:22:49 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	put_two_strings(char *s1, char *s2, bool newline)
  * @param entries string array containing the gathered info got each inode
  * @param blocks the amount of blocks used by the group; can be `NULL`
  */
-void	print_group(char *folder_name, char **entries, char *blocks, t_flags *flags)
+void	print_group(char *folder_name, char **entries,
+			char *blocks, t_flags *flags)
 {
 	if (flags->first_entry)
 		flags->first_entry = false;

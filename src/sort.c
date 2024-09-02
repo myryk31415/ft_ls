@@ -6,21 +6,22 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 07:52:48 by padam             #+#    #+#             */
-/*   Updated: 2024/08/31 07:03:12 by padam            ###   ########.fr       */
+/*   Updated: 2024/09/03 01:25:08 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 /**
- * @brief strcmp adjusted to the needs of ls. Ignores starting `.`, groups caps and noncaps
+ * @brief strcmp adjusted to the needs of ls.
+ * Ignores starting `.`, groups caps and noncaps
  */
 int	ft_strcmp_ls(const char *s1, const char *s2)
 {
-	// TODO more rules for sorting e.g. depending on case, `.folder` vs `folder`
 	const unsigned char	*str1;
 	const unsigned char	*str2;
 
+	// TODO more rules for sorting e.g. depending on case, `.folder` vs `folder`
 	str1 = (const unsigned char *)s1;
 	str2 = (const unsigned char *)s2;
 	if (!str1)
@@ -74,10 +75,11 @@ bool	compare_name(t_inode *a, t_inode *b)
  * @brief sorts an arrary of inodes
  * @param compare the function used to decide sorting
 */
-void	sort_algo(t_inode **inodes, bool (*compare)(t_inode*, t_inode*), int reverse)
+void	sort_algo(t_inode **inodes, bool (*compare)(t_inode*, t_inode*),
+			int reverse)
 {
-	t_inode **fkldajsk;
-	t_inode *tmp;
+	t_inode	**fkldajsk;
+	t_inode	*tmp;
 
 	while (*inodes)
 	{
@@ -126,5 +128,4 @@ void	sort(t_inode **inodes, t_flags *flags)
 		sort_algo(inodes, &compare_last_accessed, reverse);
 	else if (!flags->f)
 		sort_algo(inodes, &compare_name, reverse);
-
 }

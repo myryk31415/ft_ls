@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 08:00:10 by padam             #+#    #+#             */
-/*   Updated: 2024/08/31 02:30:34 by padam            ###   ########.fr       */
+/*   Updated: 2024/09/03 01:25:50 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	check_right(bool permission, char value)
 {
 	if (permission)
 		return (value);
-	return('-');
+	return ('-');
 }
 
 /**
@@ -65,7 +65,7 @@ char	*get_user(t_inode *inode)
 	passwd = getpwuid(inode->st.st_uid);
 	if (!passwd)
 		return (err(), NULL);
-	return(ft_strdup(passwd->pw_name));
+	return (ft_strdup(passwd->pw_name));
 }
 
 /**
@@ -79,7 +79,7 @@ char	*get_group(t_inode *inode)
 	group = getgrgid(inode->st.st_gid);
 	if (!group)
 		return (err(), NULL);
-	return(ft_strdup(group->gr_name));
+	return (ft_strdup(group->gr_name));
 }
 
 /**
@@ -101,7 +101,7 @@ char	*get_date_from_time(time_t *selected_time)
 		recent = false;
 	tmp_time = ctime(selected_time);
 	if (!tmp_time)
-		return(err(), NULL);
+		return (err(), NULL);
 	composed_time = ft_calloc(13, 1);
 	if (!composed_time)
 		return (err(), NULL);
